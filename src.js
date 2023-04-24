@@ -1,103 +1,81 @@
-const data = {
-  currentUser: {
-    image: {
-      png: "./images/avatars/image-juliusomo.png",
-      webp: "./images/avatars/image-juliusomo.webp",
-    },
-    username: "juliusomo",
-  },
-  comments: [
-    {
-      id: 1,
-      parent: 0,
-      content:
-        "Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
-      createdAt: "1 month ago",
-      score: 2,
-      user: {
-        image: {
-          png: "./images/avatars/image-amyrobson.png",
-          webp: "./images/avatars/image-amyrobson.webp",
-        },
-        username: "amyrobson",
-      },
-      replies: [],
-    },
-    {
-      id: 2,
-      parent: 0,
-      content:
-        "Woah, your project looks awesome! How long have you been coding for? I'm still new, but think I want to dive into React as well soon. Perhaps you can give me an insight on where I can learn React? Thanks!",
-      createdAt: "2 weeks ago",
-      score: 5,
-      user: {
-        image: {
-          png: "./images/avatars/image-maxblagun.png",
-          webp: "./images/avatars/image-maxblagun.webp",
-        },
-        username: "maxblagun",
-      },
-      replies: [
-        {
-          id: 1,
-          parent: 2,
-          content:
-            "If you're still new, I'd recommend focusing on the fundamentals of HTML, CSS, and JS before considering React. It's very tempting to jump ahead but lay a solid foundation first.",
-          createdAt: "1 week ago",
-          score: 4,
-          replyingTo: "maxblagun",
-          user: {
-            image: {
-              png: "./images/avatars/image-ramsesmiron.png",
-              webp: "./images/avatars/image-ramsesmiron.webp",
-            },
-            username: "ramsesmiron",
-          },
-        },
-        {
-          id: 2,
-          parent: 2,
-          content:
-            "I couldn't agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.",
-          createdAt: "2 days ago",
-          score: 2,
-          replyingTo: "ramsesmiron",
-          user: {
-            image: {
-              png: "./images/avatars/image-juliusomo.png",
-              webp: "./images/avatars/image-juliusomo.webp",
-            },
-            username: "juliusomo",
-          },
-        },
-      ],
-    },
-  ],
-};
+// const data = {
+//   currentUser: {
+//     image: {
+//       png: "./images/avatars/image-juliusomo.png",
+//       webp: "./images/avatars/image-juliusomo.webp",
+//     },
+//     username: "juliusomo",
+//   },
+//   comments: [
+//     {
+//       id: 1,
+//       parent: 0,
+//       content:
+//         "Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
+//       createdAt: "1 month ago",
+//       score: 2,
+//       user: {
+//         image: {
+//           png: "./images/avatars/image-amyrobson.png",
+//           webp: "./images/avatars/image-amyrobson.webp",
+//         },
+//         username: "amyrobson",
+//       },
+//       replies: [],
+//     },
+//     {
+//       id: 2,
+//       parent: 0,
+//       content:
+//         "Woah, your project looks awesome! How long have you been coding for? I'm still new, but think I want to dive into React as well soon. Perhaps you can give me an insight on where I can learn React? Thanks!",
+//       createdAt: "2 weeks ago",
+//       score: 5,
+//       user: {
+//         image: {
+//           png: "./images/avatars/image-maxblagun.png",
+//           webp: "./images/avatars/image-maxblagun.webp",
+//         },
+//         username: "maxblagun",
+//       },
+//       replies: [
+//         {
+//           id: 1,
+//           parent: 2,
+//           content:
+//             "If you're still new, I'd recommend focusing on the fundamentals of HTML, CSS, and JS before considering React. It's very tempting to jump ahead but lay a solid foundation first.",
+//           createdAt: "1 week ago",
+//           score: 4,
+//           replyingTo: "maxblagun",
+//           user: {
+//             image: {
+//               png: "./images/avatars/image-ramsesmiron.png",
+//               webp: "./images/avatars/image-ramsesmiron.webp",
+//             },
+//             username: "ramsesmiron",
+//           },
+//         },
+//         {
+//           id: 2,
+//           parent: 2,
+//           content:
+//             "I couldn't agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.",
+//           createdAt: "2 days ago",
+//           score: 2,
+//           replyingTo: "ramsesmiron",
+//           user: {
+//             image: {
+//               png: "./images/avatars/image-juliusomo.png",
+//               webp: "./images/avatars/image-juliusomo.webp",
+//             },
+//             username: "juliusomo",
+//           },
+//         },
+//       ],
+//     },
+//   ],
+// };
 
-// localStorage.setItem(
-//   "data",
-//   JSON.stringify({
-//     currentUser: {},
-//     comments: [],
-//   })
-// );
-// fetch("./data.json", {
-//   credentials: "include",
-// })
-//   .then((res) => res.json())
-//   .then((d) => {
-//     console.log(d);
-//     localStorage.setItem("data", JSON.stringify(d));
-//   });
-
-// async function loadStorage() {
-//   return localStorage.getItem("data");
-// }
-// let data = loadStorage()
-//   .then((res) => res)
-//   .then((d) => d);
-// console.log(data);
+const data = JSON.parse(localStorage.getItem("data"));
 
 function appendFrag(frag, parent) {
   let returnFrag = Array.prototype.slice.call(frag.childNodes, 0)[1];
@@ -112,6 +90,10 @@ function addCm(content, parentId, replyto = undefined) {
       : data.comments.filter((cm) => cm.id === parentId)[0].replies;
   let newCm = {
     parent: parentId,
+    id:
+      parentObject.length === 0
+        ? 1
+        : parentObject[parentObject.length - 1].id + 1,
     content: content,
     createdAt: "Now",
     replyingTo: replyto,
@@ -221,8 +203,24 @@ function renderCms(
       renderCms(cm.replies, cmNode.querySelector(".replies"));
     }
     appendCm(parent, cmNode, parentId);
+    console.log("id: ", cm.id, " parent: ", cm.parent);
+    console.log(data);
   });
+  setStorage(data);
 }
+
+///
+function setStorage(data) {
+  localStorage.setItem("data", JSON.stringify(data));
+  fetch("./data.json", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: data,
+  }).then((res) => console.log(res));
+}
+///
 
 function deleteCm(cmObject) {
   cmObject.parent === 0
