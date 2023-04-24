@@ -19,7 +19,7 @@
     font-size: 16px;
 }
 p{
-    line-height: 1.5;
+    line-height: 1.5rem;
 }
 body{
     height: 100%;
@@ -170,7 +170,7 @@ button{
     content: 'you';
     color: var(--White);
     background-color: var(--Moderate-blue);
-    font-weight: 500;
+    font-weight: 400;
     border-radius: 2px;
     padding: 0 0.3rem 0.2rem 0.3rem;
     font-size: 0.8125rem;

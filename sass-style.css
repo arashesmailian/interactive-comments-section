@@ -1,0 +1,283 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Rubik", sans-serif;
+  font-size: 16px;
+}
+* p {
+  line-height: 1.5rem;
+}
+* a {
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 500;
+}
+* button {
+  cursor: pointer;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  padding-top: 3rem;
+  background-color: hsl(228, 33%, 97%);
+}
+
+.bu-primary {
+  background-color: hsl(238, 40%, 52%);
+  color: hsl(0, 0%, 100%);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+}
+
+.comment-section {
+  padding: 0 1rem;
+  max-width: 80ch;
+  margin: auto;
+  margin-top: 1rem;
+}
+
+.container, .modal {
+  border-radius: 8px;
+  padding: 1.5rem;
+  background-color: hsl(0, 0%, 100%);
+}
+@media screen and (max-width: 600px) {
+  .container, .modal {
+    padding: 0.75rem;
+  }
+}
+
+.comments-wrp {
+  display: flex;
+  flex-direction: column;
+  align-items: normal;
+}
+
+.reply-input {
+  display: grid;
+  margin-bottom: 1rem;
+  grid-template-areas: "avatar input button";
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  min-height: 9rem;
+  margin-top: 1.5rem;
+}
+.reply-input img {
+  grid-area: avatar;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.reply-input button {
+  grid-area: button;
+  align-self: start;
+}
+.reply-input textarea {
+  grid-area: input;
+  padding: 1rem;
+  width: 100%;
+  border: 1px solid hsl(223, 19%, 93%);
+  border-radius: 4px;
+  resize: none;
+}
+@media screen and (max-width: 600px) {
+  .reply-input {
+    grid-template-areas: "input input input" "avatar ... button";
+    gap: 0.5rem;
+    align-items: center; /* aliging avatar photo to center */
+  }
+  .reply-input img {
+    width: 2rem;
+    height: 2rem;
+  }
+  .reply-input textarea {
+    height: 6rem;
+    padding: 0.5rem;
+  }
+}
+
+.comment {
+  margin-bottom: 1rem;
+  display: grid;
+  grid-template-areas: "score user controls" "score comment comment" "score comment comment";
+  grid-template-columns: auto 1fr auto;
+  gap: 1.5rem;
+  row-gap: 1rem;
+  color: hsl(211, 10%, 45%);
+}
+@media screen and (max-width: 600px) {
+  .comment {
+    grid-template-areas: "user user user" "comment comment comment" "score ... controls";
+    gap: 0.5rem;
+  }
+}
+
+.c-score {
+  grid-area: score;
+  color: hsl(238, 40%, 52%);
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  width: 1rem;
+  box-sizing: content-box;
+  background-color: hsl(228, 33%, 97%);
+  border-radius: 8px;
+  align-self: start;
+}
+@media screen and (max-width: 600px) {
+  .c-score {
+    flex-direction: row;
+    width: auto;
+  }
+}
+
+.score-control {
+  cursor: pointer;
+}
+
+.c-text {
+  grid-area: comment;
+}
+
+.reply-to {
+  color: hsl(238, 40%, 52%);
+  font-weight: 500;
+}
+
+.c-user {
+  grid-area: user;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.usr-name {
+  color: hsl(212, 24%, 26%);
+  font-weight: 700;
+}
+
+.usr-img {
+  height: 2rem;
+  width: 2rem;
+}
+
+.c-controls {
+  grid-area: controls;
+  display: flex;
+  flex-direction: row;
+  align-items: normal;
+  gap: 1rem;
+  color: hsl(238, 40%, 52%);
+  align-self: center;
+}
+.c-controls a {
+  align-items: center;
+}
+
+.edit, .reply {
+  color: hsl(238, 40%, 52%);
+}
+
+.edit {
+  display: none;
+}
+
+.delete {
+  color: hsl(358, 79%, 66%);
+  display: none;
+}
+
+.control-icon {
+  margin-right: 0.5rem;
+}
+
+.replies {
+  display: flex;
+  flex-direction: column;
+  align-items: normal;
+  margin-left: 2.5rem;
+  padding-left: 2.4rem;
+  border-left: 2px solid hsl(239, 57%, 85%);
+}
+@media screen and (max-width: 600px) {
+  .replies {
+    padding-left: 1rem;
+    margin-left: 0;
+  }
+}
+
+/* ***** current-user ***** */
+.current-user .usr-name:after {
+  content: "you";
+  color: hsl(0, 0%, 100%);
+  background-color: hsl(238, 40%, 52%);
+  font-weight: 400;
+  border-radius: 2px;
+  padding: 0 0.3rem 0.2rem 0.3rem;
+  font-size: 0.8125rem;
+  margin-left: 0.5rem;
+}
+.current-user .reply {
+  display: none;
+}
+.current-user .delete, .current-user .edit {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+/* ***** modal ***** */
+.modal-wrp {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.invisible {
+  display: none;
+}
+
+.modal {
+  max-width: 32ch;
+  display: grid;
+  grid-template-areas: "heading heading" "content content" "no yes";
+  gap: 1rem;
+}
+.modal h3 {
+  grid-area: heading;
+  color: hsl(212, 24%, 26%);
+}
+.modal button {
+  color: hsl(0, 0%, 100%);
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+}
+.modal p {
+  grid-area: content;
+  color: hsl(211, 10%, 45%);
+  line-height: 1.5rem;
+}
+.modal .no {
+  grid-area: no;
+  background-color: hsl(211, 10%, 45%);
+}
+.modal .yes {
+  grid-area: yes;
+  background-color: hsl(358, 79%, 66%);
+}
+
+/*# sourceMappingURL=sass-style.css.map */

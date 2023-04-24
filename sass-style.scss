@@ -1,0 +1,264 @@
+@import 'variables'; 
+@import 'sassFunctions';
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font: {
+        family: "Rubik",sans-serif;
+        size: 16px;
+    }
+    p{
+        line-height: $Line-height;
+    }
+    a{
+        cursor: pointer;
+        text-decoration: none;
+        @include fontWeight(500)
+    }
+    button{
+        cursor: pointer;
+    }
+}
+body{
+    height: 100%;
+    width: 100%;
+    padding-top: 3rem;
+    background-color: $Very-light-gray;
+}
+
+.bu-primary{
+    background-color: $Moderate-blue;
+    color: $White;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    @include borderRadius(4px)
+}
+.comment-section{
+    padding: 0 1rem;
+    max-width: 80ch;
+    margin: auto;
+    margin-top: 1rem;
+}
+.container{
+    @include borderRadius(8px);
+    padding:1.5rem;
+    background-color: $White;
+    @media screen and (max-width:600px) {
+        padding: 0.75rem;
+    }
+}
+.comments-wrp{
+    @include flex($direction : column);
+}
+.reply-input{
+    display: grid;
+    margin-bottom: 1rem;
+    grid-template-areas: 'avatar input button';
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    min-height: 9rem;
+    margin-top: 1.5rem;
+    img{
+        grid-area: avatar;
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+    button{
+        grid-area: button;
+        align-self: start;
+    }
+    textarea{
+        grid-area: input;
+        padding: 1rem;
+        width: 100%;
+        @include border($width:1px , $color: $Light-gray);
+        @include borderRadius(4px);
+        resize: none;
+    }
+    @media screen and (max-width:600px) {
+        grid-template-areas: 
+            "input input input"
+            "avatar ... button";
+            gap: 0.5rem;
+            align-items: center; /* aliging avatar photo to center */
+        img{
+            width: 2rem;
+            height: 2rem;
+        }
+        textarea{
+            height: 6rem;
+            padding: 0.5rem;
+        }
+    }
+}
+.comment{
+    margin-bottom: 1rem;
+    display: grid;
+    grid-template-areas: 
+        "score user controls"
+        "score comment comment"
+        "score comment comment";
+    grid-template-columns: auto 1fr auto;
+    gap: 1.5rem;
+    row-gap: 1rem;
+    color: $Grayish-Blue;
+    @media screen and (max-width:600px) {
+        grid-template-areas: 
+            'user user user'
+            'comment comment comment'
+            'score ... controls';
+        gap: 0.5rem;
+    }
+}
+.c-score{
+    grid-area: score;
+    color: $Moderate-blue;
+    @include fontWeight(500);
+    @include flex($direction:column,$align:center);
+    gap: 1rem;
+    padding: 0.75rem;
+    width: 1rem;
+    box-sizing: content-box;
+    background-color: $Very-light-gray;
+    @include borderRadius(8px);
+    align-self:start;
+    @media screen and (max-width:600px){
+        flex-direction: row;
+        width: auto;
+    }
+}
+.score-control{
+    cursor: pointer;
+}
+.c-text{
+    grid-area: comment;
+}
+.reply-to{
+    color: $Moderate-blue;
+    @include fontWeight(500);
+}
+.c-user{
+    grid-area: user;
+    @include flex($align:center);
+    gap: 1rem;
+}
+.usr-name{
+    color: $Dark-blue;
+    @include fontWeight(700);
+    // @include flex($align:end)
+}
+.usr-img{
+    height: 2rem;
+    width: 2rem;
+}
+.c-controls{
+    grid-area: controls;
+    @include flex();
+    gap: 1rem;
+    color: $Moderate-blue;
+    align-self: center;
+    a{
+        align-items: center; //this will prevent shrinking icon height
+    }
+}
+.edit , .reply{
+    color: $Moderate-blue;
+}
+.edit{
+    display: none;
+}
+.delete{
+    color: $Soft-Red;
+    display: none;
+}
+.control-icon{
+    margin-right: 0.5rem;
+    // align-items: center;
+}
+.replies{
+    @include flex($direction:column);
+    margin-left: 2.5rem;
+    padding-left: 2.4rem;
+    border-left: 2px solid $Light-grayish-blue;
+    @media screen and (max-width:600px) {
+        padding-left: 1rem;
+        margin-left: 0;
+    }
+}
+
+/* ***** current-user ***** */
+.current-user{
+    .usr-name{
+        &:after{
+            content: "you";
+            color: $White;
+            background-color: $Moderate-blue;
+            @include fontWeight(400);
+            @include borderRadius(2px);
+            padding: 0 0.3rem 0.2rem 0.3rem;
+            font-size: 0.8125rem;
+            margin-left: 0.5rem;
+        }
+    }
+    .reply{
+        display: none;
+    }
+    .delete , .edit{
+        @include flex($align:center);
+    }
+} 
+
+
+/* ***** modal ***** */
+.modal-wrp{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $Modal-wrapper
+}
+.invisible{
+    display: none;
+}
+.modal{
+    @extend .container;
+    max-width: 32ch;
+    // padding: 1.5rem;
+    display: grid;
+    grid-template-areas: 
+        'heading heading'
+        'content content'
+        'no yes';
+    gap: 1rem;
+    h3{
+        grid-area: heading;
+        color: $Dark-blue;
+    }
+    button{
+        color: $White;
+        padding: 0.75rem;
+        border: none;
+        @include borderRadius(8px);
+        @include fontWeight(500);
+    }
+    p{
+        grid-area: content;
+        color: $Grayish-Blue;
+        line-height: $Line-height;
+    }
+    .no{
+        grid-area: no;
+        background-color: $Grayish-Blue;
+    }
+    .yes{
+        grid-area: yes;
+        background-color: $Soft-Red;
+    }
+    
+}

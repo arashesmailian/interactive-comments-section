@@ -1,0 +1,19 @@
+@mixin borderRadius($radius){
+    border-radius: $radius;
+}
+@mixin fontWeight($weight){
+    font-weight: $weight;
+}
+@mixin flex($direction: row , $justify: normal, $align: normal){
+    display: flex;
+    flex-direction: $direction;
+    @if align != normal {
+        align-items: $align;
+    }
+    @if $justify != normal {
+        justify-content: $justify;
+    }
+}
+@mixin border($width , $color){
+    border: $width solid $color;
+}
