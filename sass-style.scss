@@ -1,5 +1,7 @@
 @import 'variables'; 
 @import 'sassFunctions';
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap");
+
 
 *{
     padding: 0;
@@ -228,7 +230,7 @@ body{
 }
 .modal{
     @extend .container;
-    max-width: 32ch;
+    max-width: 34ch;
     // padding: 1.5rem;
     display: grid;
     grid-template-areas: 
