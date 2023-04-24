@@ -101,14 +101,15 @@ function commentBuilder(
 ) {
   //*********************************** */
   const commentTemplate = document.querySelector(".comment-template");
-  let commentPrototype = commentTemplate.content.cloneNode(true)
-  console.log(commentPrototype);
+  let commentPrototype = commentTemplate.content.cloneNode(true);
+
+  //   console.log(commentPrototype);
   //*********************************** */
-  let cmWrp = commentWrp.cloneNode(true);
-  let renderingCmt = comment.cloneNode(true);
-  let repleisContainer = repleis.cloneNode(true);
-  commentsWrp.appendChild(cmWrp);
-  console.log("cm wrapper added to comments wrapper");
+  //   let cmWrp = commentWrp.cloneNode(true);
+  //   let renderingCmt = comment.cloneNode(true);
+  //   let repleisContainer = repleis.cloneNode(true);
+  //   commentsWrp.appendChild(cmWrp);
+  //   console.log("cm wrapper added to comments wrapper");
   //   console.log(
   //     id,
   //     username,
@@ -118,47 +119,158 @@ function commentBuilder(
   //     commentText,
   //     cmRepleis
   //   );
-  if (id) {
-    console.log("IMPORTANT ", id, commentText);
-    console.log(renderingCmt.children[2].children[0]);
-    renderingCmt.children[2].children[0].src = userImg;
-    renderingCmt.children[2].children[1].textContent = username;
-    renderingCmt.children[2].children[2].textContent = publishedTime;
-    renderingCmt.children[0].children[1].textContent = commentCount;
-    renderingCmt.children[3].children[1].textContent = id + commentText;
-    cmWrp.appendChild(renderingCmt);
-    console.log("render cmt added to cm wrapper");
+  if (true) {
+    // console.log("IMPORTANT ", id, commentText);
+    commentPrototype.querySelector(".usr-name").textContent = username;
+    commentPrototype.querySelector(".usr-img").src = userImg;
+    commentPrototype.querySelector(".cmnt-at").textContent = publishedTime;
+    commentPrototype.querySelector(".score-number").textContent = commentCount;
+    commentPrototype.querySelector(".c-body").textContent = commentText;
+
+    // console.log(commentPrototype);
+    commentsWrp.appendChild(commentPrototype);
+    // console.log(commentsWrp.children);
+
+    // renderingCmt.children[2].children[0].src = userImg;
+    // renderingCmt.children[2].children[1].textContent = username;
+    // renderingCmt.children[2].children[2].textContent = publishedTime;
+    // renderingCmt.children[0].children[1].textContent = commentCount;
+    // renderingCmt.children[3].children[1].textContent = id + commentText;
+    // cmWrp.appendChild(renderingCmt);
+    // console.log("render cmt added to cm wrapper");
   }
+  console.log(cmRepleis.length);
   if (cmRepleis.length !== 0) {
-    cmWrp.appendChild(repleisContainer);
-    console.log("reply container added to cm wrapper");
+    // cmWrp.appendChild(repleisContainer);
+    // console.log("reply container added to cm wrapper");
+    // let replyContainerPrototype = document.querySelector(".replies");
+    //   .cloneNode(true);
+    // console.log(replyContainerPrototype);
+    // commentPrototype.appendChild(replyContainerPrototype);
+    let replyContainer = document.querySelectorAll(
+      "main .comment-wrp .replies"
+    );
+    // console.log(replyContainer);
     for (let r of cmRepleis) {
-      let reply = comment.cloneNode(true);
-      reply.children[2].children[0].src = r.user.image.webp;
-      reply.children[2].children[1].tex = r.user.username;
-      reply.children[2].children[2].textContent = r.createdAt;
-      reply.children[0].children[1].textContent = r.score;
-      reply.children[3].children[1].textContent = r.content;
-      reply.children[3].children[0].textContent = "@" + r.id + r.replyingTo;
-      repleisContainer.appendChild(reply);
-      console.log("reply added to reply container");
+      let replyPrototype = commentTemplate.content.cloneNode(true);
+      //   console.log(replyPrototype);
+      //   let reply = comment.cloneNode(true);
+      replyPrototype.querySelector(".usr-name").textContent = r.user.username;
+      replyPrototype.querySelector(".usr-img").src = r.user.image.webp;
+      replyPrototype.querySelector(".cmnt-at").textContent = r.createdAt;
+      replyPrototype.querySelector(".score-number").textContent = r.score;
+      replyPrototype.querySelector(".c-body").textContent = r.content;
+      replyPrototype.querySelector(".reply-to").textContent =
+        "@" + r.replyingTo;
+      //   reply.children[2].children[0].src = r.user.image.webp;
+      //   reply.children[2].children[1].tex = r.user.username;
+      //   reply.children[2].children[2].textContent = r.createdAt;
+      //   reply.children[0].children[1].textContent = r.score;
+      //   reply.children[3].children[1].textContent = r.content;
+      //   reply.children[3].children[0].textContent = "@" + r.id + r.replyingTo;
+      //   repleisContainer.appendChild(reply);
+      //   replyContainerPrototype.appendChild(replyPrototype);
+      replyContainer[replyContainer.length - 1].appendChild(replyPrototype);
+      //   console.log("reply added to reply container");
     }
-  } else {
-    console.log("no reply");
-    // cmWrp.removeChild(repleisContainer)
-    // commentsWrp.removeChild(cmWrp)
   }
 }
 
-for (let cm of data.comments) {
-  console.log(cm);
+/* ****** rendering comments ****** */
+localStorage.setItem("data", JSON.stringify(data.comments));
+for (
+  let cm = JSON.parse(localStorage.getItem("data")), i = 0;
+  i < cm.length;
+  i++
+) {
+  console.log(cm[i]);
   commentBuilder(
-    cm.id,
-    cm.user.username,
-    cm.user.image.webp,
-    cm.createdAt,
-    cm.score,
-    cm.content,
-    cm.replies
+    cm[i].id,
+    cm[i].user.username,
+    cm[i].user.image.webp,
+    cm[i].createdAt,
+    cm[i].score,
+    cm[i].content,
+    cm[i].replies
   );
 }
+
+/* ****** function for adding click event on send buttons ****** */
+function addClickEventOnSendBtn(element) {
+  const sendBtn = element.querySelector(".bu-primary");
+  console.log(sendBtn);
+  sendBtn.addEventListener("click", (event) => {
+    console.log("hiiiiiii");
+    let newComment = {
+      content: sendBtn.previousElementSibling.value,
+      createdAt: "Now",
+      score: 0,
+      user: {
+        image: {
+          png: "./images/avatars/image-juliusomo.png",
+          webp: "./images/avatars/image-juliusomo.webp",
+        },
+        username: "juliusomo",
+      },
+      replies: [],
+    };
+    const commentTemplate = document.querySelector(".comment-template");
+    let commentPrototype = commentTemplate.content.cloneNode(true);
+    commentPrototype.querySelector(".usr-name").textContent =
+      newComment.user.username;
+    commentPrototype.querySelector(".usr-img").src = newComment.user.image.webp;
+    commentPrototype.querySelector(".cmnt-at").textContent = "Now";
+    commentPrototype.querySelector(".score-number").textContent = 0;
+    commentPrototype.querySelector(".c-body").textContent = newComment.content;
+
+    if (
+      sendBtn.parentNode.parentNode ===
+      document.querySelector(".comment-section")
+    ) {
+      console.log("main", sendBtn);
+      let targetNode = sendBtn.parentNode.previousElementSibling;
+      targetNode.appendChild(commentPrototype);
+      sendBtn.previousElementSibling.value = "";
+    } else {
+      console.log("not main", sendBtn);
+      let targetNode = sendBtn.parentNode.parentNode;
+      targetNode.appendChild(commentPrototype);
+      targetNode.removeChild(targetNode.querySelector(".reply-input"));
+    }
+  });
+}
+
+/* ****** adding highest level send-button click event ****** */
+addClickEventOnSendBtn(document.querySelector(".comment-section .reply-input"));
+
+/* ****** function for adding click event on reply buttons(plus dding new send btns click event) ****** */
+function addClickEventOnReplyBtns() {
+  const replyBtns = document.querySelectorAll(".reply");
+  const replyTemplate = document.querySelector(".reply-input-template");
+  replyBtns.forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+      const replyBox = replyTemplate.content.cloneNode(true);
+      let targetNode = btn.parentNode.parentNode.nextElementSibling;
+      if (!targetNode.querySelector(".reply-input")) {
+        targetNode.appendChild(replyBox);
+      }
+      console.log(targetNode.querySelector(".reply-input"));
+      addClickEventOnSendBtn(targetNode.querySelector(".reply-input"));
+    });
+  });
+}
+addClickEventOnReplyBtns();
+
+// const replyBtn = document.querySelectorAll(".reply");
+// const replyTemplate = document.querySelector(".reply-input-template");
+// replyBtn.forEach((element) => {
+//   element.addEventListener("click", (event) => {
+//     console.log("click event");
+//     console.log(event.srcElement.parentNode.parentNode.nextElementSibling);
+//     let replyBox = replyTemplate.content.cloneNode(true);
+//     event.srcElement.parentNode.parentNode.nextElementSibling.appendChild(
+//       replyBox
+//     );
+//   });
+//   addClickEventOnSendBtn();
+// });

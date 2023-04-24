@@ -129,6 +129,8 @@ button{
 .usr-name{
     color: var(--Dark-blue);
     font-weight: 700;
+    display: flex;
+    align-items: end;
 }  
 .usr-img{
     height: 2rem;
@@ -164,6 +166,22 @@ button{
     border-left: 2px solid var(--Light-grayish-blue);
 }
 
+.current-user .usr-name:after {
+    content: 'you';
+    color: var(--White);
+    background-color: var(--Moderate-blue);
+    font-weight: 500;
+    border-radius: 2px;
+    padding: 0 0.3rem 0.2rem 0.3rem;
+    font-size: 0.8125rem;
+    margin-left: 0.5rem;
+}
+.current-user .reply{
+    display: none;
+}
+.current-user .delete, .current-user .edit{
+    display: flex;
+}
 
 @media screen and (max-width:600px){
     .container{
@@ -202,9 +220,6 @@ button{
 }
     
 /* ***** modal ***** */
-.invisible{
-    display: block;
-}
 .modal-wrp{
     position: fixed;
     top: 0;
@@ -215,6 +230,9 @@ button{
     justify-content: center;
     align-items: center;
     background-color: rgba(0,0,0,0.5);
+}
+.invisible{
+    display: none;
 }
 .modal{
     max-width: 32ch;
