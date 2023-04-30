@@ -1,5 +1,5 @@
 let dataaaaaa;
-fetch("./data.json")
+fetch("http://localhost:5500/data.json")
   .then((res) => res.json())
   .then((d) => {
     console.log(d);

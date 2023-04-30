@@ -1,4 +1,7 @@
+const { format, render } = timeago; //timeago library
+
 // const data = {
+
 //   currentUser: {
 //     image: {
 //       png: "./images/avatars/image-juliusomo.png",
@@ -75,6 +78,9 @@
 //   ],
 // };
 
+// import importedData from "./data.json";
+
+// console.log(importedData);
 const data = JSON.parse(localStorage.getItem("data"));
 
 function appendFrag(frag, parent) {
@@ -95,7 +101,8 @@ function addCm(content, parentId, replyto = undefined) {
         ? 1
         : parentObject[parentObject.length - 1].id + 1,
     content: content,
-    createdAt: "Now",
+    createdAt:
+      new Date().getTime() - Number(cmSectionDiv.getAttribute("datetime")),
     replyingTo: replyto,
     score: 0,
     repleis: parentId === 0 ? [] : undefined,
@@ -191,35 +198,36 @@ function appendCm(parentNode, cmNode, parentId) {
 
 function renderCms(
   cmList = data.comments.sort((a, b) => b.score - a.score),
-  parent = document.querySelector(".comments-wrp")
+  parentNode = document.querySelector(".comments-wrp")
 ) {
-  // console.log(cmList);
-  parent.innerHTML = "";
+  parentNode.innerHTML = "";
+
   cmList.forEach((cm) => {
     //we have set parentId's to be unique so when we want to add replies to a comment it won't be added to another one
     const parentId = cm.parent == 0 ? cm.id : cm.parent;
     const cmNode = createCmNode(cm);
+    //setting created time every time we call renderCms function
+    cmNode.querySelector(".cmnt-at").textContent = format(
+      Number(cm.createdAt) + Number(cmSectionDiv.getAttribute("datetime"))
+    );
     if ("replies" in cm && cm.replies.length > 0) {
       renderCms(cm.replies, cmNode.querySelector(".replies"));
     }
-    appendCm(parent, cmNode, parentId);
-    console.log("id: ", cm.id, " parent: ", cm.parent);
-    console.log(data);
+    appendCm(parentNode, cmNode, parentId);
   });
-  setStorage(data);
 }
 
 ///
-function setStorage(data) {
-  localStorage.setItem("data", JSON.stringify(data));
-  fetch("./data.json", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: data,
-  }).then((res) => console.log(res));
-}
+// function setStorage(data) {
+//   localStorage.setItem("data", JSON.stringify(data));
+//   fetch("http://localhost:5500/data.json", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(data),
+//   });
+// }
 ///
 
 function deleteCm(cmObject) {
@@ -245,6 +253,11 @@ function openModal(cmObject) {
 }
 
 // ****** main script ******
+
+//setting datetime attribute for higher order div. because we need this time change created time every render
+const cmSectionDiv = document.querySelector(".comment-section");
+cmSectionDiv.setAttribute("datetime", new Date().getTime());
+
 renderCms(); //first renders all comments
 document.querySelector(".bu-primary").addEventListener("click", (event) => {
   if (event.target.previousElementSibling.value != 0) {
