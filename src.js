@@ -82,6 +82,7 @@ const { format, render } = timeago; //timeago library
 
 // console.log(importedData);
 const data = JSON.parse(localStorage.getItem("data"));
+// console.log(data.comments[1].replies.sort((a, b) => a.createdAt - b.createdAt));
 
 function appendFrag(frag, parent) {
   let returnFrag = Array.prototype.slice.call(frag.childNodes, 0)[1];
@@ -211,7 +212,10 @@ function renderCms(
       Number(cm.createdAt) + Number(cmSectionDiv.getAttribute("datetime"))
     );
     if ("replies" in cm && cm.replies.length > 0) {
-      renderCms(cm.replies, cmNode.querySelector(".replies"));
+      let sortedReplies = cm.replies.sort(
+        (a, b) => Number(a.createdAt) - Number(b.createdAt)
+      );
+      renderCms(sortedReplies, cmNode.querySelector(".replies"));
     }
     appendCm(parentNode, cmNode, parentId);
   });
