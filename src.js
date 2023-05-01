@@ -1,7 +1,19 @@
 import jsonData from "./data.json" assert { type: "json" };
 
 const { format, render } = timeago; //timeago library
-const data = checkLocalStorage("data") ? getLocalStorage("data") : jsonData;
+const data = checkLocalStorage("data")
+  ? getLocalStorage("data")
+  : fixingFirstDataCreatedTimes();
+
+function fixingFirstDataCreatedTimes(list = jsonData.comments) {
+  list.forEach((comment) => {
+    comment.createdAt = Number(comment.createdAt) + new Date().getTime();
+    if ("replies" in comment && comment.replies.length > 0) {
+      fixingFirstDataCreatedTimes(comment.replies);
+    }
+  });
+  return jsonData;
+}
 
 function appendFrag(frag, parent) {
   let returnFrag = Array.prototype.slice.call(frag.childNodes, 0)[1];
@@ -21,8 +33,7 @@ function addCm(content, parentId, replyto = undefined) {
         ? 1
         : parentObject[parentObject.length - 1].id + 1,
     content: content,
-    createdAt:
-      new Date().getTime() - Number(cmSectionDiv.getAttribute("datetime")),
+    createdAt: new Date().getTime(),
     replyingTo: replyto,
     score: 0,
     repleis: parentId === 0 ? [] : undefined,
@@ -128,9 +139,7 @@ function renderCms(
     const parentId = cm.parent == 0 ? cm.id : cm.parent;
     const cmNode = createCmNode(cm);
     //setting created time every time we call renderCms function
-    cmNode.querySelector(".cmnt-at").textContent = format(
-      Number(cm.createdAt) + Number(cmSectionDiv.getAttribute("datetime"))
-    );
+    cmNode.querySelector(".cmnt-at").textContent = format(Number(cm.createdAt));
     if ("replies" in cm && cm.replies.length > 0) {
       let sortedReplies = cm.replies.sort(
         (a, b) => Number(a.createdAt) - Number(b.createdAt)
@@ -187,3 +196,8 @@ document.querySelector(".bu-primary").addEventListener("click", (event) => {
     event.target.previousElementSibling.value = "";
   }
 });
+
+// setInterval(() => {
+//   console.log(":)");
+//   render(document.querySelectorAll(".cmnt-at"), "en_US");
+// }, 3000);
